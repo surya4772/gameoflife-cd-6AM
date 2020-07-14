@@ -1,0 +1,22 @@
+---
+- hosts: demo3
+  tasks:
+    - name: install java
+      yum:
+        name: java-1.8.0
+        state: present
+
+    - name: create folder
+      file:
+        path: /tmp/gameoflife
+        state: directory
+
+    - name: copy war file
+      copy:
+        src: {{ workspace }}/gameoflife-0.0.1.war
+        dest: /tmp/gameoflife/gameoflife.war
+
+    - name: run .war file
+      shell: nohup java -jar gameoflife.war &
+      args:
+        chdir: /tmp/gameoflife
